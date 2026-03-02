@@ -1,0 +1,52 @@
+<script setup>
+import { ref } from "vue"
+
+import song1 from "@/assets/music/love-story.mp3"
+import song2 from "@/assets/music/mine.mp3"
+import song3 from "@/assets/music/sample.mp3"
+
+const songs = [
+    { title: "Love Story", artist: "Artist Name", duration: "03:55", src: song1 },
+    { title: "Mine", artist: "Artist Name", duration: "03:51", src: song2 },
+    { title: "Our Song", artist: "Artist Name", duration: "03:20", src: song3 },
+]
+
+const currentIndex = ref(0)
+const isPlaying = ref(false)
+const audio = new Audio(songs[currentIndex.value].src)
+
+const playSong = () => {
+    if (!isPlaying.value) {
+        audio.play()
+        isPlaying.value = true
+    } else {
+        audio.pause()
+        isPlaying.value = false
+    }
+}
+
+const nextSong = () => {
+    audio.pause()
+    currentIndex.value = (currentIndex.value + 1) % songs.length
+    audio.src = songs[currentIndex.value].src
+    audio.play()
+    isPlaying.value = true
+}
+
+const prevSong = () => {
+    audio.pause()
+    currentIndex.value =
+        (currentIndex.value - 1 + songs.length) % songs.length
+    audio.src = songs[currentIndex.value].src
+    audio.play()
+    isPlaying.value = true
+}
+
+const selectSong = (index) => {
+    audio.pause()
+    currentIndex.value = index
+    audio.src = songs[index].src
+    audio.play()
+    isPlaying.value = true
+}
+</script>
